@@ -1,0 +1,54 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <h1>Request Smuggling Calculator</h1>
+    <hr/>
+    <div>
+      <p>
+        <b>Content-Length:</b> <span class="cl">0</span><br/>
+        <b>Transfer-Encoding:</b> <span class="te">0</span>
+      </p>
+      <textarea id="content1" rows="15" cols="100"></textarea>
+    </div>
+    <div>
+    <p>
+      <b>Content-Length:</b> <span class="cl">0</span><br/>
+      <b>Transfer-Encoding:</b> <span class="te">0</span>
+    </p>
+    <textarea id="content2" rows="15" cols="100"></textarea>
+    </div>
+    <script>
+    const content1 = document.getElementById('content1');
+    const content2 = document.getElementById('content2');
+
+    async function postData(e) {
+      const data = {
+        "content": e.target.value,
+      }
+      const response = await fetch('/api/calc-length', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      return response.json();
+    }
+
+    function updateLengths(e) {
+      postData(e)
+        .then((data) => {
+          div = e.target.closest("div");
+          cl = div.querySelector(".cl");
+          te = div.querySelector(".te");
+          cl.textContent = data['content-length'];
+          te.textContent = data['transfer-encoding'];
+        });
+    }
+
+    content1.addEventListener('input', updateLengths);
+    content2.addEventListener('input', updateLengths);
+    </script>
+  </body>
+</html>
