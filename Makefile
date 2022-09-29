@@ -1,0 +1,22 @@
+###
+# RSC Makefile
+###
+
+.PHONY: build run down
+.DEFAULT_GOAL := run
+
+# Variables
+NAME = rsc
+PORT = 5000
+
+build:
+	@echo "Building ${NAME}"
+	docker build -t ${NAME} .
+
+run:
+	@echo "Running ${NAME} on random port"
+	docker run --rm -d -p ${PORT} --name="${NAME}" ${NAME}
+
+down:
+	@echo "Stopping ${NAME}"
+	docker container stop ${NAME}
