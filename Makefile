@@ -16,6 +16,7 @@ build:
 run:
 	@echo "Running ${NAME} on random port"
 	docker run --rm -d -p ${PORT} --name="${NAME}" ${NAME}
+	docker container port ${NAME}
 
 down:
 	@echo "Stopping ${NAME}"
